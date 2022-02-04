@@ -1,0 +1,62 @@
+package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.example.demo.dao.userDao;
+import com.example.demo.model.userdetails;
+
+@Controller
+public class userController {
+	@Autowired
+	userDao userdao;
+	
+	@RequestMapping("index")
+	public String userdetails()
+	{
+		return "index.jsp";
+	}
+	
+
+	@RequestMapping("addUser")
+	public String adduser(userdetails user)
+	{
+		userdao.save(user);  
+		return "index.jsp";
+		
+	}
+	@RequestMapping("getUser")
+	public ModelAndView getUser(@RequestParam int id)
+	{
+		ModelAndView mav=new ModelAndView("showUser.jsp");
+		userdetails user = userdao.findById(id).orElse(new userdetails());
+		mav.addObject(user);  
+		return mav;
+		
+	}
+	
+	@RequestMapping("deleteUser")
+	public ModelAndView deleteUser(@RequestParam int id)
+	{
+		ModelAndView mav=new ModelAndView("deleteUser.jsp");
+		userdetails user = userdao.findById(id).orElse(new userdetails());
+		userdao.deleteById(id);
+		mav.addObject(user);  
+		return mav;
+		
+	}
+	
+	@RequestMapping("updateUser")
+	public ModelAndView updateUser(userdetails user)
+	{
+		ModelAndView mav=new ModelAndView("updateUser.jsp");
+	    user = userdao.findById(user.getId()).orElse(new userdetails());
+		userdao.deleteById(user.getId());
+		mav.addObject(user);  
+		return mav;
+		
+	}
+}
