@@ -1,0 +1,5 @@
+spring.h2.console.enabled=true
+spring.datasource.platform=h2
+spring.datasource.url=jdbc:h2:mem:user
+
+// these are the application properties use to connect h2 database to the server
